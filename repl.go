@@ -31,6 +31,11 @@ func initCommands() config {
 				description: "Exit the Pokedex",
 				callback:    commandExit,
 			},
+			"map": {
+				name:        "map",
+				description: "Return a map of pokemon locations",
+				callback:    commandMap,
+			},
 		},
 	}
 	return cfg
