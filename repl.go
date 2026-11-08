@@ -10,24 +10,30 @@ import (
 type cliCommand struct {
 	name        string
 	description string
-	callback    func() error
+	callback    func(cfg *config) error
+}
+type config struct {
+	Commands map[string]cliCommand
 }
 
 var Commands map[string]cliCommand
 
-func initCommands() {
-	Commands = map[string]cliCommand{
-		"help": {
-			name:        "help",
-			description: "Displays a help message",
-			callback:    commandHelp,
-		},
-		"exit": {
-			name:        "exit",
-			description: "Exit the Pokedex",
-			callback:    commandExit,
+func initCommands() config {
+	cfg := config{
+		Commands: map[string]cliCommand{
+			"help": {
+				name:        "help",
+				description: "Displays a help message",
+				callback:    commandHelp,
+			},
+			"exit": {
+				name:        "exit",
+				description: "Exit the Pokedex",
+				callback:    commandExit,
+			},
 		},
 	}
+	return cfg
 
 }
 
@@ -42,16 +48,15 @@ func cleanInput(text string) []string {
 	return result
 
 }
-func startRepl() {
-	initCommands()
+func startRepl(cfg *config) {
 	scanner := bufio.NewScanner(os.Stdin)
 	for {
 		fmt.Print("Pokedex > ")
 		scanner.Scan()
 		cleaned := cleanInput(scanner.Text())
-		command, ok := Commands[cleaned[0]]
+		command, ok := cfg.Commands[cleaned[0]]
 		if ok {
-			command.callback()
+			command.callback(cfg)
 		}
 
 	}
