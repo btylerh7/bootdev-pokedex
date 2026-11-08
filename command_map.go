@@ -1,34 +1,17 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
-	"net/http"
+	"github.com/btylerh7/bootdev-pokedex/internal/api"
 )
 
-type location struct {
-	name string
-	url  string
-}
-type mapResponse struct {
-	Results []struct {
-		Name string `json:name`
-		URL  string `json:url`
-	} `json:results`
-}
-
 func commandMap(cfg *config) error {
-
-	apiURL := "https://pokeapi.co/api/v2/location-area/"
-	var jsonData mapResponse
-	res, err := http.Get(apiURL)
+	jsonData, err := api.GetLocationAreas(nil)
 	if err != nil {
 		return err
 	}
-	defer res.Body.Close()
-	if err := json.NewDecoder(res.Body).Decode(&jsonData); err != nil {
-		return err
-	}
+	cfg.NextUrl = jsonData.Next
+	cfg.PrevUrl = jsonData.Previous
 	for _, locationName := range jsonData.Results {
 		fmt.Println(locationName.Name)
 	}

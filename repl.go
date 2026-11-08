@@ -14,6 +14,8 @@ type cliCommand struct {
 }
 type config struct {
 	Commands map[string]cliCommand
+	NextUrl  *string
+	PrevUrl  *string
 }
 
 var Commands map[string]cliCommand
@@ -35,6 +37,11 @@ func initCommands() config {
 				name:        "map",
 				description: "Return a map of pokemon locations",
 				callback:    commandMap,
+			},
+			"mapb": {
+				name:        "mapb",
+				description: "Return a map of pokemon locations from the previous page",
+				callback:    commandMapb,
 			},
 		},
 	}
