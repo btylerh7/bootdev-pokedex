@@ -11,7 +11,8 @@ func cleanInput(text string) []string {
 	var result []string
 
 	for word := range strings.SplitSeq(text, " ") {
-		result = append(result, strings.Trim(word, " "))
+		lower := strings.ToLower(word)
+		result = append(result, strings.Trim(lower, " "))
 	}
 
 	return result
