@@ -1,7 +1,6 @@
 package pokecache
 
 import (
-	"fmt"
 	"testing"
 )
 
@@ -13,26 +12,37 @@ type testCase struct {
 	expectedFound bool
 }
 
-func TestCacheAdd(t *testing.T) {
-	fmt.Println("Testing adding to cache")
-	failCount := 0
-	passCount := 0
+func TestCache(t *testing.T) {
 	var nilExpected []byte
 	addCases := []testCase{
 		{
 			name:          "Add Correctly",
 			input:         "https://example.com",
-			inputKey:      "successful test",
+			inputKey:      "Add Correctly",
 			expected:      []byte("https://example.com"),
 			expectedFound: false,
+		},
+		{
+			name:          "Add Second",
+			input:         "https://google.com",
+			inputKey:      "Add Second",
+			expected:      []byte("https://google.com"),
+			expectedFound: false,
+		},
+		{
+			name:          "Update Correctly",
+			input:         "https://google.com",
+			inputKey:      "Add Correctly",
+			expected:      []byte("https://google.com"),
+			expectedFound: true,
 		},
 	}
 	getCases := []testCase{
 		{
 			name:          "Get Existing",
 			input:         "https://example.com",
-			inputKey:      "successful test",
-			expected:      []byte("https://example.com"),
+			inputKey:      "Add Correctly",
+			expected:      []byte("https://google.com"),
 			expectedFound: true,
 		},
 		{
@@ -49,30 +59,32 @@ func TestCacheAdd(t *testing.T) {
 		cache.Add(current.inputKey, bytes)
 		val, ok := cache.Get(current.inputKey)
 		if !ok {
-			failCount++
 			t.Errorf("%s: Not found in cache", current.name)
 		}
+		if val == nil {
+			t.Errorf("%s: Get returned nil", current.name)
+		}
 		if string(val) != string(bytes) {
-			failCount++
 			t.Errorf("%s: Bytes input did not match bytes output", current.name)
 		}
-		passCount++
 	}
 	for _, current := range getCases {
 		val, ok := cache.Get(current.inputKey)
 		if ok != current.expectedFound {
-			failCount++
 			t.Errorf("Key not found: %s", current.inputKey)
+		}
+		if current.expectedFound == false && val != nil {
+			t.Errorf("%s: Expected nil, got %s", current.name, val)
+		}
+		if current.expectedFound == true && val == nil {
+			t.Errorf("%s: Get returned nil", current.name)
 			continue
 		}
 		if string(val) != string(current.expected) {
-			failCount++
 			t.Errorf("Found key does not match expected value")
 			continue
 		}
-		passCount++
 
 	}
-	t.Logf("Passed: %d\nFailed: %d", passCount, failCount)
 
 }

@@ -54,6 +54,9 @@ func cleanInput(text string) []string {
 
 	for word := range strings.SplitSeq(text, " ") {
 		lower := strings.ToLower(word)
+		if len(word) == 0 {
+			continue
+		}
 		result = append(result, strings.Trim(lower, " "))
 	}
 
