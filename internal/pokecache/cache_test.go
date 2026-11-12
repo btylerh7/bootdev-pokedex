@@ -2,6 +2,7 @@ package pokecache
 
 import (
 	"testing"
+	"time"
 )
 
 type testCase struct {
@@ -53,7 +54,7 @@ func TestCache(t *testing.T) {
 			expectedFound: false,
 		},
 	}
-	cache := NewCache()
+	cache := NewCache(10 * time.Second)
 	for _, current := range addCases {
 		bytes := []byte(current.input)
 		cache.Add(current.inputKey, bytes)
