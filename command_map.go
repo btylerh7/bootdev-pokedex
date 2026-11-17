@@ -6,7 +6,7 @@ import (
 )
 
 func commandMap(cfg *config) error {
-	jsonData, err := api.GetLocationAreas(nil)
+	jsonData, err := api.GetLocationAreas(cfg.NextUrl)
 	if err != nil {
 		return err
 	}
