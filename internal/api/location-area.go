@@ -2,7 +2,11 @@ package api
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
+	"time"
+
+	"github.com/btylerh7/bootdev-pokedex/internal/pokecache"
 )
 
 type mapResponse struct {
@@ -15,6 +19,8 @@ type mapResponse struct {
 	} `json:"results"`
 }
 
+var cache = pokecache.NewCache(time.Minute * 5)
+
 func GetLocationAreas(url *string) (mapResponse, error) {
 
 	apiURL := "https://pokeapi.co/api/v2/location-area/"
@@ -22,13 +28,30 @@ func GetLocationAreas(url *string) (mapResponse, error) {
 		apiURL = *url
 	}
 	var jsonData mapResponse
+	cacheData, ok := cache.Get(apiURL)
+	if ok {
+		if err := json.Unmarshal(cacheData, &jsonData); err != nil {
+			return jsonData, err
+		}
+		return jsonData, nil
+	}
+
 	res, err := http.Get(apiURL)
 	if err != nil {
-		return jsonData, err
+		return jsonData, fmt.Errorf("Unsuccessful HTTP response: %v", err)
 	}
 	defer res.Body.Close()
+
 	if err := json.NewDecoder(res.Body).Decode(&jsonData); err != nil {
-		return jsonData, err
+		return jsonData, fmt.Errorf("Unable to decode data: %v", err)
 	}
+
+	bytes, err := json.Marshal(jsonData)
+	if err != nil {
+		var mapres mapResponse
+		return mapres, fmt.Errorf("Unable to encode cache data: %v", err)
+	}
+	cache.Add(apiURL, bytes)
 	return jsonData, nil
+
 }
