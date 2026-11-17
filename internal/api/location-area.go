@@ -19,6 +19,12 @@ type mapResponse struct {
 	} `json:"results"`
 }
 
+type locationResponse struct {
+	Pokemon []struct {
+		Name string `json:"name"`
+	}
+}
+
 var cache = pokecache.NewCache(time.Minute * 5)
 
 func GetLocationAreas(url *string) (mapResponse, error) {
@@ -53,5 +59,8 @@ func GetLocationAreas(url *string) (mapResponse, error) {
 	}
 	cache.Add(apiURL, bytes)
 	return jsonData, nil
+
+}
+func GetPokemonForLocation(location string) (locationResponse, error) {
 
 }
