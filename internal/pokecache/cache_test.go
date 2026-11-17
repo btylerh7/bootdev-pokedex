@@ -85,7 +85,19 @@ func TestCache(t *testing.T) {
 			t.Errorf("Found key does not match expected value")
 			continue
 		}
-
 	}
-
+}
+func TestReapingCache(t *testing.T) {
+	cache := NewCache(3 * time.Second)
+	cache.Add("test1", []byte("https://google.com"))
+	time.Sleep(time.Duration(1 * time.Second))
+	_, exists := cache.Get("test1")
+	if !exists {
+		t.Errorf("Expected key 'test1' to still exist after 1 second")
+	}
+	time.Sleep(3 * time.Second)
+	_, exists2 := cache.Get("test1")
+	if exists2 {
+		t.Errorf("Expected key 'test1' to be gone after 3 seconds")
+	}
 }
