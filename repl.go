@@ -3,55 +3,49 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"github.com/btylerh7/bootdev-pokedex/commands"
 	"os"
 	"strings"
 )
 
-type cliCommand struct {
-	name        string
-	description string
-	callback    func(cfg *config, args ...string) error
-}
-type config struct {
-	Commands map[string]cliCommand
-	NextUrl  *string
-	PrevUrl  *string
-}
+var Commands map[string]commands.CliCommand
 
-var Commands map[string]cliCommand
-
-func initCommands() config {
-	cfg := config{
-		Commands: map[string]cliCommand{
+func initCommands() commands.Config {
+	cfg := commands.Config{
+		Commands: map[string]commands.CliCommand{
 			"help": {
-				name:        "help",
-				description: "Displays a help message",
-				callback:    commandHelp,
+				Name:        "help",
+				Description: "Displays a help message",
+				Callback:    commands.Help,
 			},
 			"exit": {
-				name:        "exit",
-				description: "Exit the Pokedex",
-				callback:    commandExit,
+				Name:        "exit",
+				Description: "Exit the Pokedex",
+				Callback:    commands.Exit,
 			},
 			"explore": {
-				name:        "explore",
-				description: "Explore Pokemon in an Area",
-				callback:    commandExplore,
+				Name:        "explore",
+				Description: "Explore Pokemon in an Area",
+				Callback:    commands.Explore,
 			},
 			"map": {
-				name:        "map",
-				description: "Return a map of pokemon locations",
-				callback:    commandMap,
+				Name:        "map",
+				Description: "Return a map of pokemon locations",
+				Callback:    commands.Map,
 			},
 			"mapb": {
-				name:        "mapb",
-				description: "Return a map of pokemon locations from the previous page",
-				callback:    commandMapb,
+				Name:        "mapb",
+				Description: "Return a map of pokemon locations from the previous page",
+				Callback:    commands.Mapb,
+			},
+			"catch": {
+				Name:        "catch",
+				Description: "Take a pokemon name and see if you catch it!",
+				Callback:    commands.Catch,
 			},
 		},
 	}
 	return cfg
-
 }
 
 func cleanInput(text string) []string {
@@ -68,7 +62,7 @@ func cleanInput(text string) []string {
 	return result
 
 }
-func startRepl(cfg *config) {
+func startRepl(cfg *commands.Config) {
 	scanner := bufio.NewScanner(os.Stdin)
 	for {
 		fmt.Print("Pokedex > ")
@@ -76,7 +70,7 @@ func startRepl(cfg *config) {
 		cleaned := cleanInput(scanner.Text())
 		command, ok := cfg.Commands[cleaned[0]]
 		if ok {
-			err := command.callback(cfg, cleaned[1:]...)
+			err := command.Callback(cfg, cleaned[1:]...)
 			if err != nil {
 				fmt.Println(err)
 			}

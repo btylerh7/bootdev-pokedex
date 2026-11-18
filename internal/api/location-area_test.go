@@ -1,7 +1,6 @@
 package api
 
 import (
-	"fmt"
 	"slices"
 	"testing"
 )
@@ -23,14 +22,14 @@ func TestGetPokemonForLocation(t *testing.T) {
 	for _, location := range locations {
 		result, err := GetPokemonForLocation(location.input)
 		if err != location.err {
-			fmt.Errorf("Did not get expected value of %s, got %s", location.err, err)
+			t.Errorf("Did not get expected value of %s, got %s", location.err, err)
 		}
-		resString := make([]string, 0, len(result.Pokemon))
-		for _, pokemon := range result.Pokemon {
-			resString = append(resString, pokemon.Name)
+		resString := make([]string, 0, len(result.PokemonEncounters))
+		for _, pokemon := range result.PokemonEncounters {
+			resString = append(resString, pokemon.Pokemon.Name)
 		}
 		if !slices.Equal(resString, location.output) {
-			fmt.Errorf("Did not get expected value of %t")
+			t.Errorf("Did not get expected value of %v", location.output)
 		}
 	}
 }

@@ -1,11 +1,11 @@
-package main
+package commands
 
 import (
 	"fmt"
 	"github.com/btylerh7/bootdev-pokedex/internal/api"
 )
 
-func commandExplore(cfg *config, args ...string) error {
+func Explore(cfg *Config, args ...string) error {
 	if len(args) == 0 {
 		return fmt.Errorf("Must supply a location name")
 	}

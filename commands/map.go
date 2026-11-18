@@ -1,12 +1,12 @@
-package main
+package commands
 
 import (
 	"fmt"
 	"github.com/btylerh7/bootdev-pokedex/internal/api"
 )
 
-func commandMapb(cfg *config, _ ...string) error {
-	jsonData, err := api.GetLocationAreas(cfg.PrevUrl)
+func Map(cfg *Config, _ ...string) error {
+	jsonData, err := api.GetLocationAreas(cfg.NextUrl)
 	if err != nil {
 		return err
 	}
