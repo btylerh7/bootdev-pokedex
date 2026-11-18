@@ -48,6 +48,11 @@ func initCommands() commands.Config {
 				Description: "View information on a pokemon if you have caught it",
 				Callback:    commands.Inspect,
 			},
+			"pokedex": {
+				Name:        "pokedex",
+				Description: "View the names of all caught pokemon",
+				Callback:    commands.Pokedex,
+			},
 		},
 	}
 	return cfg
