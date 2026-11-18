@@ -7,7 +7,7 @@ import (
 
 type getPokemonTestCase struct {
 	input      string
-	output     getPokemonResponse
+	output     PokemonInfo
 	errMessage string
 }
 
@@ -15,12 +15,12 @@ func TestGetPokemon(t *testing.T) {
 	cases := []getPokemonTestCase{
 		{
 			input:      "pikachu",
-			output:     getPokemonResponse{Name: "pikachu", BaseExperience: 112},
+			output:     PokemonInfo{Name: "pikachu", BaseExperience: 112},
 			errMessage: "",
 		},
 		{
 			input:      "notreal",
-			output:     getPokemonResponse{},
+			output:     PokemonInfo{},
 			errMessage: "Unsuccessful HTTP response",
 		},
 	}
@@ -35,7 +35,7 @@ func TestGetPokemon(t *testing.T) {
 			}
 			continue
 		}
-		if (result == testCase.output) == false {
+		if (result.Name == testCase.output.Name && result.BaseExperience == testCase.output.BaseExperience) == false {
 			t.Errorf("Expected %v and received %v", testCase.output, result)
 		}
 	}

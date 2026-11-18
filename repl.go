@@ -43,6 +43,11 @@ func initCommands() commands.Config {
 				Description: "Take a pokemon name and see if you catch it!",
 				Callback:    commands.Catch,
 			},
+			"inspect": {
+				Name:        "inspect",
+				Description: "View information on a pokemon if you have caught it",
+				Callback:    commands.Inspect,
+			},
 		},
 	}
 	return cfg

@@ -9,7 +9,7 @@ import (
 
 func Catch(config *Config, args ...string) error {
 	if len(args) == 0 {
-		return fmt.Errorf("Must supply a location name")
+		return fmt.Errorf("Must supply a pokemon name")
 	}
 	pokemon := args[0]
 	result, err := api.GetPokemon(pokemon)
