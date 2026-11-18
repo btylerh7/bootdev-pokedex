@@ -5,7 +5,7 @@ import (
 	"github.com/btylerh7/bootdev-pokedex/internal/api"
 )
 
-func commandMap(cfg *config) error {
+func commandMap(cfg *config, _ ...string) error {
 	jsonData, err := api.GetLocationAreas(cfg.NextUrl)
 	if err != nil {
 		return err
