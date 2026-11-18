@@ -1,5 +1,9 @@
 package commands
 
+import (
+	"github.com/btylerh7/bootdev-pokedex/internal/api"
+)
+
 type CliCommand struct {
 	Name        string
 	Description string
@@ -10,5 +14,5 @@ type Config struct {
 	Commands      map[string]CliCommand
 	NextUrl       *string
 	PrevUrl       *string
-	CaughtPokemon []string
+	CaughtPokemon []api.PokemonInfo
 }

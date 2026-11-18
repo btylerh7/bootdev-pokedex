@@ -20,7 +20,7 @@ func Catch(config *Config, args ...string) error {
 	chance := rand.Intn(50 + result.BaseExperience)
 	if result.BaseExperience < chance {
 		fmt.Printf("%s was caught!\n", pokemon)
-		config.CaughtPokemon = append(config.CaughtPokemon, pokemon)
+		config.CaughtPokemon = append(config.CaughtPokemon, result)
 	} else {
 		fmt.Printf("%s escaped!\n", pokemon)
 	}

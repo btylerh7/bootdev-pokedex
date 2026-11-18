@@ -4,12 +4,12 @@ import (
 	"fmt"
 )
 
-type getPokemonResponse struct {
+type PokemonInfo struct {
 	Name           string `json:"name"`
 	BaseExperience int    `json:"base_experience"`
 }
 
-func GetPokemon(pokemon string) (getPokemonResponse, error) {
+func GetPokemon(pokemon string) (PokemonInfo, error) {
 	apiUrl := fmt.Sprintf("https://pokeapi.co/api/v2/pokemon/%s", pokemon)
-	return MakeAPICall[getPokemonResponse](apiUrl)
+	return MakeAPICall[PokemonInfo](apiUrl)
 }
